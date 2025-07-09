@@ -7,6 +7,7 @@ import { MagnifyingGlassIcon } from '../components/Icons';
 import { useCart } from '../hooks/useCart';
 
 const ProductsPage: React.FC = () => {
+  // Force a rebuild to ensure VITE_APP_BACKEND_URL is picked up
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>(CATEGORIES_ORDER[0]);

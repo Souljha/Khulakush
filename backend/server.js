@@ -10,7 +10,7 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/khulak
 // Middleware
 app.use(express.json()); // For parsing application/json
 app.use(cors({
-    origin: 'https://51b2742f09de.ngrok-free.app', // Allow requests from your frontend ngrok URL
+    origin: 'https://khulakush-frontend.onrender.com', // Allow requests from your deployed frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'] // Specify allowed headers
 }));

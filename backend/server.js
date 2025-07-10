@@ -25,7 +25,7 @@ mongoose.connect(MONGODB_URI)
         const productCount = await Product.countDocuments();
         if (productCount === 0) {
             console.log('No products found, seeding database...');
-            await seedDatabase();
+            await seedDatabase(Product); // Pass the Product model
             console.log('Database seeded successfully.');
         } else {
             console.log('Products already exist, skipping seeding.');

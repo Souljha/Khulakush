@@ -1,9 +1,3 @@
-require('dotenv').config({ path: './backend/.env' });
-const mongoose = require('mongoose');
-const Product = require('./models/Product');
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/khulakush';
-
 const mockProducts = [
   // Breakfast
   {
@@ -167,16 +161,10 @@ const mockProducts = [
   },
 ];
 
-mongoose.connect(MONGODB_URI)
-    .then(async () => {
-        console.log('MongoDB connected for seeding');
-        await Product.deleteMany({});
-        console.log('Existing products cleared');
-        await Product.insertMany(mockProducts);
-        console.log('Mock products inserted');
-    })
-    .catch(err => console.error('MongoDB seeding error:', err))
-    .finally(() => {
-        mongoose.connection.close();
-        console.log('MongoDB connection closed');
-    });
+module.exports = async (Product) => {
+    console.log('MongoDB connected for seeding');
+    await Product.deleteMany({});
+    console.log('Existing products cleared');
+    await Product.insertMany(mockProducts);
+    console.log('Mock products inserted');
+};

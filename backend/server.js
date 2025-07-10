@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const Product = require('./models/Product'); // Import Product model
+const seedDatabase = require('./seed'); // Import the seed script
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,7 +19,18 @@ app.use(cors({
 
 // MongoDB Connection
 mongoose.connect(MONGODB_URI)
-    .then(() => console.log('MongoDB connected successfully'))
+    .then(async () => {
+        console.log('MongoDB connected successfully');
+        // Check if products exist, if not, seed the database
+        const productCount = await Product.countDocuments();
+        if (productCount === 0) {
+            console.log('No products found, seeding database...');
+            await seedDatabase();
+            console.log('Database seeded successfully.');
+        } else {
+            console.log('Products already exist, skipping seeding.');
+        }
+    })
     .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes

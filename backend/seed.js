@@ -154,7 +154,7 @@ const mockProducts = [
     name: 'Smell-Proof Bag', description: 'For discreetly transporting or storing cannabis and its accessories,', price: 180.00, imageUrl: '/images/smell proof bag.webp', category: "Accessories", stock: 30
   },
   {
-    name: 'Bong', description: 'Provides a smoother smoking experience by filtering the smoke through water.', price: 150.00, imageUrl: '/images/bong.jpg', category: "Accessories", stock: 30
+    name: 'Bong', description: 'Provides a smoother smoking experience by filtering the smoke through water.', price: 150.00, imageUrl: '/images/Bong.jpg', category: "Accessories", stock: 30
   },
   {
     name: 'Hand Pipe', description: 'A portable and convenient option for quick smoking sessions, often made from glass, metal, or silicone.', price: 60.00, imageUrl: '/images/hand pipe.jpg', category: "Accessories", stock: 30

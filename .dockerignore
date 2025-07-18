@@ -1,0 +1,12 @@
+# Dependencies
+node_modules
+
+# Build artifacts from local development
+dist
+build
+
+# Git
+.git
+
+# Backend code (if it's in the same directory)
+backend

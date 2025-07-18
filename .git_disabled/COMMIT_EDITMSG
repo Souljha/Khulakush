@@ -1,0 +1,1 @@
+Fix: Pass Product model to seedDatabase function on backend startup

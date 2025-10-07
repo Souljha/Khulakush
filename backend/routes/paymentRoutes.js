@@ -57,9 +57,9 @@ router.post('/initialize/:orderId', async (req, res) => {
     const payfastData = {
       merchant_id: PAYFAST_MERCHANT_ID,
       merchant_key: PAYFAST_MERCHANT_KEY,
-      return_url: `${process.env.VITE_APP_BACKEND_URL}/api/payment/return`,
-      cancel_url: `${process.env.VITE_APP_BACKEND_URL}/api/payment/cancel`,
-      notify_url: `${process.env.VITE_APP_BACKEND_URL}/api/payment/notify`,
+      return_url: `${process.env.VITE_APP_BACKEND_URL || 'https://khulakush-production.up.railway.app'}/api/payment/return?orderId=${orderId}`,
+      cancel_url: `${process.env.VITE_APP_BACKEND_URL || 'https://khulakush-production.up.railway.app'}/api/payment/cancel?orderId=${orderId}`,
+      notify_url: `${process.env.VITE_APP_BACKEND_URL || 'https://khulakush-production.up.railway.app'}/api/payment/notify`,
       name_first: order.customerInfo.name.split(' ')[0] || 'Customer',
       name_last: order.customerInfo.name.split(' ').slice(1).join(' ') || 'User',
       email_address: order.customerInfo.email,
@@ -152,14 +152,16 @@ router.post('/notify', async (req, res) => {
 
 // GET - Payment return (success)
 router.get('/return', async (req, res) => {
-  const frontendUrl = process.env.VITE_APP_BACKEND_URL.replace(':5001', ':5173');
-  res.redirect(`${frontendUrl}/payment/success?${new URLSearchParams(req.query).toString()}`);
+  const orderId = req.query.orderId;
+  const frontendUrl = process.env.FRONTEND_URL || 'https://khulakush.store';
+  res.redirect(`${frontendUrl}/payment/success?orderId=${orderId}`);
 });
 
 // GET - Payment cancel
 router.get('/cancel', async (req, res) => {
-  const frontendUrl = process.env.VITE_APP_BACKEND_URL.replace(':5001', ':5173');
-  res.redirect(`${frontendUrl}/payment/cancelled`);
+  const orderId = req.query.orderId;
+  const frontendUrl = process.env.FRONTEND_URL || 'https://khulakush.store';
+  res.redirect(`${frontendUrl}/payment/cancelled?orderId=${orderId}`);
 });
 
 // GET - Check payment status for an order

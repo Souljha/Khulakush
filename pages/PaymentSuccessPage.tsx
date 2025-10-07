@@ -1,9 +1,60 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { KHULA_KUSH_GREEN, KHULA_KUSH_TEXT_HEADING, KHULA_KUSH_TEXT_BODY } from '../constants';
+import { useAuth } from '../hooks/useAuth';
+
+interface Order {
+  _id: string;
+  orderNumber: string;
+  customerInfo: {
+    name: string;
+    phone: string;
+  };
+  orderType: string;
+  deliveryAddress?: {
+    street: string;
+    city: string;
+  };
+}
 
 const PaymentSuccessPage: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { user } = useAuth();
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const orderId = searchParams.get('orderId');
+    if (orderId) {
+      fetchOrder(orderId);
+    } else {
+      setLoading(false);
+    }
+  }, [searchParams]);
+
+  const fetchOrder = async (orderId: string) => {
+    try {
+      const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
+      const response = await fetch(`${backendUrl}/api/orders/${orderId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setOrder(data);
+      }
+    } catch (error) {
+      console.error('Error fetching order:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen flex items-center justify-center bg-white text-[${KHULA_KUSH_TEXT_HEADING}] p-4`}>
@@ -15,15 +66,37 @@ const PaymentSuccessPage: React.FC = () => {
             </svg>
           </div>
 
-          <h1 className="text-3xl font-bold text-green-700 mb-4">Payment Successful!</h1>
+          <h1 className="text-3xl font-bold text-green-700 mb-4">Order Placed!</h1>
 
-          <p className={`text-[${KHULA_KUSH_TEXT_BODY}] mb-6`}>
-            Thank you for your payment. Your order has been confirmed and is being processed.
-          </p>
+          {order && (
+            <>
+              <p className={`text-[${KHULA_KUSH_TEXT_BODY}] mb-6`}>
+                Thank you for your order, {order.customerInfo.name}!
+              </p>
+
+              <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                <p className="text-sm text-gray-600 mb-1">Order Number</p>
+                <p className={`text-2xl font-bold text-[${KHULA_KUSH_GREEN}]`}>{order.orderNumber}</p>
+              </div>
+
+              <p className={`text-[${KHULA_KUSH_TEXT_BODY}] mb-4`}>
+                {order.orderType === 'delivery'
+                  ? `Your order will be delivered to ${order.deliveryAddress?.street || 'your address'}`
+                  : `Your order is ready for ${order.orderType}`
+                }
+              </p>
+            </>
+          )}
+
+          {!order && (
+            <p className={`text-[${KHULA_KUSH_TEXT_BODY}] mb-6`}>
+              Thank you for your payment. Your order has been confirmed and is being processed.
+            </p>
+          )}
 
           <div className="bg-white rounded-lg p-4 mb-6">
             <p className={`text-sm text-[${KHULA_KUSH_TEXT_BODY}] mb-2`}>
-              You will receive a WhatsApp confirmation shortly with your order details.
+              A confirmation has been sent via WhatsApp to {order?.customerInfo.phone || user?.phone || 'your number'}.
             </p>
             <p className={`text-sm text-[${KHULA_KUSH_TEXT_BODY}]`}>
               <strong>Highgrounds BLVD</strong><br />
@@ -36,7 +109,7 @@ const PaymentSuccessPage: React.FC = () => {
         <div className="space-y-3">
           <button
             onClick={() => navigate('/app/products')}
-            className={`w-full bg-[${KHULA_KUSH_GREEN}] text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-200`}
+            className="w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-200"
           >
             Continue Shopping
           </button>

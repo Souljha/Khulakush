@@ -1,10 +1,17 @@
-require('dotenv').config({ path: '../.env' });
+// Load environment variables from parent directory in development, or use Railway's env vars in production
+const path = require('path');
+const fs = require('fs');
+const parentEnvPath = path.join(__dirname, '../.env');
+if (fs.existsSync(parentEnvPath)) {
+    require('dotenv').config({ path: parentEnvPath });
+} else {
+    require('dotenv').config(); // Fallback to default .env location or use system env vars
+}
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const Product = require('./models/Product'); // Import Product model
 const seedDatabase = require('./seed'); // Import the seed script
-const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 5001;

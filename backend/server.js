@@ -21,6 +21,8 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/khulak
 app.use(express.json()); // For parsing application/json
 app.use(cors({
     origin: [
+        'https://khulakush.store',
+        'https://www.khulakush.store',
         'https://khulakush.vercel.app',
         'https://khulakush-rkuwccppf-brendons-projects-fe75eefe.vercel.app',
         'http://localhost:5174',

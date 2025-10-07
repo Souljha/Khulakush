@@ -8,7 +8,7 @@ export const MOCK_PRODUCTS: Product[] = [
     _id: 'breakfast1', id: 'breakfast1', name: 'HIGHGROUNDS FARMSTYLE BREAKFAST', description: 'Grilled boerewors, streaky bacon, thyme mushrooms, zest tomatoes, chakalaka, eggs & 2 slices of toasted sourdough served with more berry jam & Farmstyle butter.', price: 165.00, imageUrl: '/public/images/Highgrounds Farmstyle Breakfast.webp', category: ProductCategory.FOOD, subCategory: FoodType.BREAKFAST, stock: 99, vendor: HIGHGROUNDSBLVD_VENDOR_NAME
   },
   {
-    _id: 'breakfast2', id: 'breakfast2', name: 'JAPANESE MILK BREAD FRENCH TOAST', description: 'With mascarpone vanilla cream & mixed berry compote, served with Bacon (optional)', price: 145.00, imageUrl: '/public/images/Japanese milk bread french toast.jpg', category: ProductCategory.FOOD, subCategory: FoodType.BREAKFAST, stock: 99, vendor: HIGHGROUNDSBLVD_VENDOR_NAME
+    _id: 'breakfast2', id: 'breakfast2', name: 'JAPANESE FRENCH TOAST', description: 'With mascarpone vanilla cream & mixed berry compote, served with Bacon (optional)', price: 145.00, imageUrl: '/public/images/Japanese milk bread french toast.jpg', category: ProductCategory.FOOD, subCategory: FoodType.BREAKFAST, stock: 99, vendor: HIGHGROUNDSBLVD_VENDOR_NAME
   },
   // Breakfast Add-ons / Build Your Own
   {

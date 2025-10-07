@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Product, ProductCategory, FlowerType, FoodType } from '../types';
+import { Product, ProductCategory, FlowerType, FoodType, AccessoryType } from '../types';
 import { CATEGORIES_ORDER, KHULA_KUSH_GREEN, KHULA_KUSH_TEXT_HEADING, KHULA_KUSH_TEXT_MUTED, KHULA_KUSH_TEXT_ON_GREEN } from '../constants';
 import ProductCard from '../components/ProductCard';
+import FlowerCard from '../components/FlowerCard';
+import FoodCard from '../components/FoodCard';
+import AccessoryCard from '../components/AccessoryCard';
 import { MagnifyingGlassIcon } from '../components/Icons';
 import { useCart } from '../hooks/useCart';
 
@@ -53,24 +56,35 @@ const ProductsPage: React.FC = () => {
 
   const productsBySubCategory = useMemo(() => {
     if (selectedCategory === ProductCategory.FLOWER) {
-      const cbdFlowers = filteredProducts.filter(p => p.subCategory === FlowerType.CBD);
-      const thcFlowers = filteredProducts.filter(p => p.subCategory === FlowerType.THC);
+      const greendoorFlowers = filteredProducts.filter(p => p.subCategory === FlowerType.GREENDOOR);
+      const indoorFlowers = filteredProducts.filter(p => p.subCategory === FlowerType.INDOOR);
       return [
-        { title: FlowerType.CBD, items: cbdFlowers },
-        { title: FlowerType.THC, items: thcFlowers },
+        { title: FlowerType.GREENDOOR, items: greendoorFlowers },
+        { title: FlowerType.INDOOR, items: indoorFlowers },
       ];
     } else if (selectedCategory === ProductCategory.FOOD) {
+      const edibles = filteredProducts.filter(p => p.subCategory === FoodType.EDIBLES);
       const breakfast = filteredProducts.filter(p => p.subCategory === FoodType.BREAKFAST);
       const breakfastAddOns = filteredProducts.filter(p => p.subCategory === FoodType.BREAKFAST_ADD_ONS);
       const tapasLunch = filteredProducts.filter(p => p.subCategory === FoodType.TAPAS_LUNCH);
       const burgers = filteredProducts.filter(p => p.subCategory === FoodType.BURGERS);
       const cafeCoffee = filteredProducts.filter(p => p.subCategory === FoodType.CAFE_COFFEE);
       return [
+        { title: FoodType.EDIBLES, items: edibles },
         { title: FoodType.BREAKFAST, items: breakfast },
-        { title: FoodType.BREAKFAST_ADD_ONS, items: breakfastAddOns },
         { title: FoodType.TAPAS_LUNCH, items: tapasLunch },
         { title: FoodType.BURGERS, items: burgers },
         { title: FoodType.CAFE_COFFEE, items: cafeCoffee },
+        { title: FoodType.BREAKFAST_ADD_ONS, items: breakfastAddOns },
+      ].filter(group => group.items.length > 0); // Only include groups with items
+    } else if (selectedCategory === ProductCategory.ACCESSORIES) {
+      const dabs = filteredProducts.filter(p => p.subCategory === AccessoryType.DABS);
+      const vetPro = filteredProducts.filter(p => p.subCategory === AccessoryType.VET_PRO);
+      const general = filteredProducts.filter(p => p.subCategory === AccessoryType.GENERAL);
+      return [
+        { title: AccessoryType.DABS, items: dabs },
+        { title: AccessoryType.VET_PRO, items: vetPro },
+        { title: AccessoryType.GENERAL, items: general },
       ].filter(group => group.items.length > 0); // Only include groups with items
     }
     return [{ title: null, items: filteredProducts }];
@@ -160,6 +174,24 @@ const ProductsPage: React.FC = () => {
                   </li>
                 ))}
               </ul>
+            ) : selectedCategory === ProductCategory.FLOWER ? (
+              <div className="space-y-3">
+                {group.items.map(product => (
+                  <FlowerCard key={product._id} product={product} />
+                ))}
+              </div>
+            ) : selectedCategory === ProductCategory.FOOD ? (
+              <div className="space-y-3">
+                {group.items.map(product => (
+                  <FoodCard key={product._id} product={product} />
+                ))}
+              </div>
+            ) : selectedCategory === ProductCategory.ACCESSORIES ? (
+              <div className="space-y-3">
+                {group.items.map(product => (
+                  <AccessoryCard key={product._id} product={product} />
+                ))}
+              </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {group.items.map(product => (

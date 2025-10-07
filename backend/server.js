@@ -45,7 +45,13 @@ mongoose.connect(MONGODB_URI)
 
 // Routes
 const productRoutes = require('./routes/productRoutes');
+const chatRoutes = require('./routes/chat');
+const orderRoutes = require('./routes/orderRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 app.use('/api/products', productRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // Basic Route
 app.get('/', (req, res) => {

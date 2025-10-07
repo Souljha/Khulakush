@@ -6,16 +6,23 @@ export enum ProductCategory {
 }
 
 export enum FlowerType {
-  CBD = "CBD Flower",
-  THC = "THC Flower"
+  GREENDOOR = "Greendoor Flower",
+  INDOOR = "Indoor"
 }
 
 export enum FoodType {
+  EDIBLES = "Edibles",
   BREAKFAST = "Breakfast",
   BREAKFAST_ADD_ONS = "Breakfast Add-ons / Build Your Own",
   TAPAS_LUNCH = "Tapas / Lunch",
   BURGERS = "Burgers",
   CAFE_COFFEE = "Café Coffee"
+}
+
+export enum AccessoryType {
+  DABS = "Dabs",
+  VET_PRO = "Vet Pro",
+  GENERAL = "General"
 }
 
 export interface Product {
@@ -26,7 +33,7 @@ export interface Product {
   price: number;
   imageUrl: string;
   category: ProductCategory;
-  subCategory?: FlowerType | FoodType;
+  subCategory?: FlowerType | FoodType | AccessoryType;
   stock: number;
   vendor: string;
   details?: string; // e.g., "Sativa - CBD 20% and THC 0-1%"

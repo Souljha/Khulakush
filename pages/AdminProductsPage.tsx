@@ -6,7 +6,7 @@ const AdminProductsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [formData, setFormData] = useState<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>({
+  const [formData, setFormData] = useState<Omit<Product, '_id' | 'id'>>({
     name: '',
     description: '',
     price: 0,
@@ -14,7 +14,8 @@ const AdminProductsPage: React.FC = () => {
     subCategory: undefined,
     imageUrl: '',
     stock: 0,
-    vendor: '', // Add vendor field
+    vendor: '',
+    details: undefined,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -33,7 +34,7 @@ const AdminProductsPage: React.FC = () => {
       const backendUrl = process.env.VITE_APP_BACKEND_URL || 'http://localhost:5000';
       let response;
       if (editingProduct) {
-        response = await fetch(`${backendUrl}/api/products/${editingProduct.id}`, {
+        response = await fetch(`${backendUrl}/api/products/${editingProduct._id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
@@ -58,7 +59,8 @@ const AdminProductsPage: React.FC = () => {
         subCategory: undefined,
         imageUrl: '',
         stock: 0,
-        vendor: '', // Reset vendor field
+        vendor: '',
+        details: undefined,
       });
       setEditingProduct(null);
     } catch (err: any) {
@@ -78,7 +80,8 @@ const AdminProductsPage: React.FC = () => {
       subCategory: product.subCategory,
       imageUrl: product.imageUrl,
       stock: product.stock,
-      vendor: product.vendor, // Set vendor for editing
+      vendor: product.vendor,
+      details: product.details,
     });
   };
 
@@ -161,7 +164,7 @@ const AdminProductsPage: React.FC = () => {
               </thead>
               <tbody>
                 {products.map((product) => (
-                  <tr key={product.id} className="hover:bg-gray-50">
+                  <tr key={product._id} className="hover:bg-gray-50">
                     <td className="py-2 px-4 border-b border-gray-200">
                       <img src={product.imageUrl} alt={product.name} className="w-16 h-16 object-cover rounded" />
                     </td>
@@ -169,7 +172,7 @@ const AdminProductsPage: React.FC = () => {
                     <td className="py-2 px-4 border-b border-gray-200 text-gray-700">{product.category}</td>
                     <td className="py-2 px-4 border-b border-gray-200 text-gray-700">R {product.price.toFixed(2)}</td>
                     <td className="py-2 px-4 border-b border-gray-200 text-gray-700">{product.stock}</td>
-                    <td className="py-2 px-4 border-b border-gray-200 text-gray-700">{product.vendor}</td> {/* Display vendor */}
+                    <td className="py-2 px-4 border-b border-gray-200 text-gray-700">{product.vendor || 'N/A'}</td> {/* Display vendor */}
                     <td className="py-2 px-4 border-b border-gray-200">
                       <button
                         onClick={() => handleEdit(product)}
@@ -178,7 +181,7 @@ const AdminProductsPage: React.FC = () => {
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(product.id)}
+                        onClick={() => handleDelete(product._id)}
                         className="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600"
                       >
                         Delete
@@ -205,7 +208,7 @@ const AdminProductsPage: React.FC = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -217,7 +220,7 @@ const AdminProductsPage: React.FC = () => {
                 value={formData.description}
                 onChange={handleChange}
                 rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 required
               ></textarea>
             </div>
@@ -230,7 +233,7 @@ const AdminProductsPage: React.FC = () => {
                 value={formData.price}
                 onChange={handleChange}
                 step="0.01"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -242,7 +245,7 @@ const AdminProductsPage: React.FC = () => {
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -254,7 +257,7 @@ const AdminProductsPage: React.FC = () => {
                 name="subCategory"
                 value={formData.subCategory || ''}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               />
             </div>
             <div>
@@ -265,7 +268,7 @@ const AdminProductsPage: React.FC = () => {
                 name="imageUrl"
                 value={formData.imageUrl}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -277,8 +280,31 @@ const AdminProductsPage: React.FC = () => {
                 name="stock"
                 value={formData.stock}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 required
+              />
+            </div>
+            <div>
+              <label htmlFor="vendor" className="block text-sm font-medium text-gray-700">Vendor (Optional)</label>
+              <input
+                type="text"
+                id="vendor"
+                name="vendor"
+                value={formData.vendor}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="details" className="block text-sm font-medium text-gray-700">Details (Optional)</label>
+              <input
+                type="text"
+                id="details"
+                name="details"
+                value={formData.details || ''}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                placeholder="e.g., Hybrid - CBD 18% and THC 0.3%"
               />
             </div>
           </div>

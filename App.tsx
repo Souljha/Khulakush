@@ -12,6 +12,10 @@ import ContactUsPage from './pages/ContactUsPage';
 import CheckoutPage from './pages/CheckoutPage';
 import GrowClubPage from './pages/GrowClubPage';
 import AdminProductsPage from './pages/AdminProductsPage';
+import AdminOrdersPage from './pages/AdminOrdersPage';
+import PaymentPage from './pages/PaymentPage';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
+import PaymentCancelledPage from './pages/PaymentCancelledPage';
 
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
@@ -38,6 +42,10 @@ const AppContent: React.FC = () => {
       <Route path="/contact-us" element={<ContactUsPage onBack={() => navigate('/')} />} />
       <Route path="/grow-club" element={<GrowClubPage onBack={() => navigate('/')} />} />
       <Route path="/admin/products" element={<AdminProductsPage />} />
+      <Route path="/admin/orders" element={<AdminOrdersPage />} />
+      <Route path="/payment" element={<PaymentPage />} />
+      <Route path="/payment/success" element={<PaymentSuccessPage />} />
+      <Route path="/payment/cancelled" element={<PaymentCancelledPage />} />
       
       {/* Main Application Routes with Shell */}
       <Route path="/app/*" element={<MainAppShell />}>

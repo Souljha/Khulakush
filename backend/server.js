@@ -21,13 +21,14 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/khulak
 app.use(express.json()); // For parsing application/json
 app.use(cors({
     origin: [
-        'https://khulakush-frontend.onrender.com',
+        'https://khulakush.vercel.app',
+        'https://khulakush-rkuwccppf-brendons-projects-fe75eefe.vercel.app',
         'http://localhost:5174',
         'http://localhost:4173',
-        'http://localhost:4176', // Added for local dev
-        'http://localhost:5173' // Added for Vite dev server
+        'http://localhost:4176',
+        'http://localhost:5173'
     ], // Allow requests from your deployed frontend and local development
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], // Specify allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'] // Specify allowed headers
 }));
 
